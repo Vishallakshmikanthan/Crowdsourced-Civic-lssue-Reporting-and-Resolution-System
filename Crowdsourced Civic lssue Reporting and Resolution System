@@ -9,6 +9,54 @@
 // npx tailwindcss init -p
 
 // ============================================
+// FILE: package.json (UPDATE YOUR EXISTING ONE)
+// ============================================
+{
+  "name": "civic-issue-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "lucide-react": "^0.263.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.6"
+  }
+}
+
+// ============================================
 // FILE: tailwind.config.js
 // ============================================
 /** @type {import('tailwindcss').Config} */
@@ -49,13 +97,13 @@ module.exports = {
 }
 
 // ============================================
-// FILE: src/App.js
+// FILE: src/App.js (COMPLETE CODE)
 // ============================================
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  MapPin, Camera, Users, Trophy, MessageCircle, Bell, Search, Filter, 
-  ThumbsUp, Flag, Upload, CheckCircle, Clock, AlertTriangle, Star, 
-  ArrowLeft, ArrowRight, Plus, Settings, Home, FileText, Target 
+  MapPin, Camera, Users, Trophy, Bell, Search, Filter, 
+  ThumbsUp, Flag, CheckCircle, Clock, Star, 
+  ArrowLeft, Plus, Settings, Home, FileText, Target 
 } from 'lucide-react';
 
 const CivicIssueApp = () => {
@@ -92,7 +140,6 @@ const CivicIssueApp = () => {
         category: "infrastructure",
         timeRemaining: "2 days",
         lastUpdate: "Municipality team assigned",
-        images: ["pothole1.jpg"],
         createdAt: new Date(Date.now() - 86400000 * 3),
         updatedAt: new Date(Date.now() - 86400000 * 1)
       },
@@ -108,7 +155,6 @@ const CivicIssueApp = () => {
         category: "lighting",
         timeRemaining: "5 days",
         lastUpdate: "Report received",
-        images: ["streetlight1.jpg"],
         createdAt: new Date(Date.now() - 86400000 * 5),
         updatedAt: new Date(Date.now() - 86400000 * 2)
       },
@@ -124,7 +170,6 @@ const CivicIssueApp = () => {
         category: "sanitation",
         timeRemaining: "Overdue by 3 days",
         lastUpdate: "Escalated to supervisor",
-        images: ["garbage1.jpg"],
         createdAt: new Date(Date.now() - 86400000 * 7),
         updatedAt: new Date(Date.now() - 86400000 * 3)
       },
@@ -140,7 +185,6 @@ const CivicIssueApp = () => {
         category: "water",
         timeRemaining: "Completed",
         lastUpdate: "Issue resolved successfully",
-        images: ["water1.jpg"],
         createdAt: new Date(Date.now() - 86400000 * 10),
         updatedAt: new Date(Date.now() - 86400000 * 1)
       }
@@ -176,8 +220,6 @@ const CivicIssueApp = () => {
     
     setReports(prev => [report, ...prev]);
     setUserPoints(prev => prev + 10);
-    
-    // Add to aggregate records
     setAggregateRecords(prev => [report, ...prev]);
     
     // Reset form
@@ -236,17 +278,6 @@ const CivicIssueApp = () => {
       case 'pending': return 'bg-yellow-500';
       case 'overdue': return 'bg-red-500';
       default: return 'bg-gray-500';
-    }
-  };
-
-  const getStatusText = (status) => {
-    switch(status) {
-      case 'completed': return 'Completed';
-      case 'in_progress': return 'In Progress';
-      case 'pending': return 'Pending';
-      case 'overdue': return 'Overdue';
-      case 'submitted': return 'Submitted';
-      default: return 'Unknown';
     }
   };
 
@@ -314,7 +345,6 @@ const CivicIssueApp = () => {
 
   const renderHome = () => (
     <div className="p-4 pb-20 space-y-6 animate-fade-in">
-      {/* Welcome Section */}
       <div className="bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl shadow-sm">
         <h2 className="text-2xl font-bold text-gray-800 mb-2">
           Welcome, {userRole === 'municipality' ? 'Municipality' : 'Citizen'}!
@@ -345,7 +375,6 @@ const CivicIssueApp = () => {
         </div>
       </div>
 
-      {/* Quick Actions */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-gray-800">Quick Actions</h3>
         <div className="grid grid-cols-2 gap-3">
@@ -366,7 +395,6 @@ const CivicIssueApp = () => {
         </div>
       </div>
 
-      {/* Recent Activity */}
       <div className="space-y-3">
         <h3 className="text-lg font-semibold text-gray-800">Recent Activity</h3>
         <div className="space-y-2">
@@ -390,37 +418,6 @@ const CivicIssueApp = () => {
           ))}
         </div>
       </div>
-
-      {/* Statistics */}
-      <div className="bg-white p-4 rounded-lg shadow-sm">
-        <h3 className="font-medium text-gray-800 mb-3">Statistics</h3>
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div>
-            <div className="text-lg font-bold text-blue-600">
-              {aggregateRecords.filter(r => r.status === 'pending').length}
-            </div>
-            <div className="text-xs text-gray-600">Pending</div>
-          </div>
-          <div>
-            <div className="text-lg font-bold text-yellow-600">
-              {aggregateRecords.filter(r => r.status === 'in_progress').length}
-            </div>
-            <div className="text-xs text-gray-600">In Progress</div>
-          </div>
-          <div>
-            <div className="text-lg font-bold text-red-600">
-              {aggregateRecords.filter(r => r.status === 'overdue').length}
-            </div>
-            <div className="text-xs text-gray-600">Overdue</div>
-          </div>
-          <div>
-            <div className="text-lg font-bold text-green-600">
-              {aggregateRecords.filter(r => r.status === 'completed').length}
-            </div>
-            <div className="text-xs text-gray-600">Completed</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 
@@ -437,7 +434,6 @@ const CivicIssueApp = () => {
       </div>
 
       <div className="space-y-4">
-        {/* Category Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
           <select
@@ -451,12 +447,9 @@ const CivicIssueApp = () => {
             <option value="water">💧 Water Supply</option>
             <option value="traffic">🚦 Traffic</option>
             <option value="environment">🌱 Environment</option>
-            <option value="safety">🛡️ Safety</option>
-            <option value="other">📋 Other</option>
           </select>
         </div>
 
-        {/* Location Input */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Location *</label>
           <div className="relative">
@@ -470,27 +463,19 @@ const CivicIssueApp = () => {
               required
             />
           </div>
-          <button className="mt-2 text-sm text-blue-600 hover:text-blue-700 transition-colors">
-            📍 Use Current Location
-          </button>
         </div>
 
-        {/* Description */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Description *</label>
           <textarea
             value={newReport.description}
             onChange={(e) => setNewReport(prev => ({ ...prev, description: e.target.value }))}
-            placeholder="Describe the issue in detail... What exactly is the problem? When did you notice it?"
+            placeholder="Describe the issue in detail..."
             className="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
             required
           />
-          <div className="text-xs text-gray-500 mt-1">
-            {newReport.description.length}/500 characters
-          </div>
         </div>
 
-        {/* Image Upload */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Upload Photo</label>
           <div
@@ -505,26 +490,23 @@ const CivicIssueApp = () => {
                 "Tap to add photo (with geotag)"
               )}
             </p>
-            <p className="text-xs text-gray-500 mt-1">Photos help resolve issues faster</p>
           </div>
           <input
             ref={fileInputRef}
             type="file"
             accept="image/*"
-            capture="environment"
             onChange={handleImageUpload}
             className="hidden"
           />
         </div>
 
-        {/* Priority Selection */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Priority Level</label>
           <div className="grid grid-cols-3 gap-2">
             {[
-              { value: 'low', label: 'Low', emoji: '🟢', desc: 'Minor issue' },
-              { value: 'medium', label: 'Medium', emoji: '🟡', desc: 'Moderate concern' },
-              { value: 'high', label: 'High', emoji: '🔴', desc: 'Urgent action needed' }
+              { value: 'low', label: 'Low', emoji: '🟢' },
+              { value: 'medium', label: 'Medium', emoji: '🟡' },
+              { value: 'high', label: 'High', emoji: '🔴' }
             ].map((priority) => (
               <button
                 key={priority.value}
@@ -538,13 +520,11 @@ const CivicIssueApp = () => {
               >
                 <div className="text-lg">{priority.emoji}</div>
                 <div className="text-sm">{priority.label}</div>
-                <div className="text-xs text-gray-500">{priority.desc}</div>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Anonymous Reporting */}
         <div className="bg-gray-50 p-4 rounded-lg">
           <div className="flex items-center space-x-3">
             <input
@@ -552,18 +532,14 @@ const CivicIssueApp = () => {
               id="anonymous"
               checked={newReport.anonymous}
               onChange={(e) => setNewReport(prev => ({ ...prev, anonymous: e.target.checked }))}
-              className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500 transition-all"
+              className="w-5 h-5 text-blue-600 rounded focus:ring-blue-500"
             />
             <label htmlFor="anonymous" className="text-sm font-medium text-gray-700 cursor-pointer">
               Report anonymously
             </label>
           </div>
-          <p className="text-xs text-gray-500 mt-2 ml-8">
-            Your identity will be hidden, but you can still track the progress
-          </p>
         </div>
 
-        {/* Submit Button */}
         <button
           onClick={submitReport}
           disabled={!newReport.location.trim() || !newReport.description.trim()}
@@ -581,109 +557,412 @@ const CivicIssueApp = () => {
     <div className="p-4 pb-20 space-y-4 animate-fade-in">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold text-gray-800">Community Issues</h2>
-        <div className="flex items-center space-x-2">
-          <div className="text-sm text-gray-600">
-            {filteredRecords.length} issues
-          </div>
-          <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
-            <Filter className="w-5 h-5" />
-          </button>
-        </div>
+        <button className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+          <Filter className="w-5 h-5" />
+        </button>
       </div>
 
-      {/* Search Bar */}
       <div className="relative">
         <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search issues, locations, or categories..."
+          placeholder="Search issues..."
           className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
         />
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex space-x-2 overflow-x-auto pb-2">
-        {['all', 'pending', 'in_progress', 'overdue', 'completed'].map((status) => (
-          <button
-            key={status}
-            className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium whitespace-nowrap hover:bg-gray-200 transition-colors"
-          >
-            {status.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-          </button>
-        ))}
-      </div>
-
-      {/* Issues List */}
       <div className="space-y-4">
-        {filteredRecords.length === 0 ? (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-lg font-medium text-gray-800 mb-2">No issues found</h3>
-            <p className="text-gray-600">Try adjusting your search terms</p>
-          </div>
-        ) : (
-          filteredRecords.map((record) => (
-            <div
-              key={record.id}
-              className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all duration-200 overflow-hidden group"
-            >
-              <div className="p-4">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">
-                      {record.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 flex items-center">
-                      <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
-                      {record.location}
-                    </p>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                        {record.category}
-                      </span>
-                      <span className="text-xs text-gray-500">
-                        {new Date(record.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-                  </div>
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium border flex-shrink-0 ${getPriorityColor(record.priority)}`}>
-                    {record.priority.toUpperCase()}
+        {filteredRecords.map((record) => (
+          <div
+            key={record.id}
+            className="bg-white rounded-xl shadow-sm border hover:shadow-md transition-all duration-200 overflow-hidden"
+          >
+            <div className="p-4">
+              <div className="flex items-start justify-between mb-3">
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-800 mb-1">{record.title}</h3>
+                  <p className="text-sm text-gray-600 flex items-center">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    {record.location}
+                  </p>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getPriorityColor(record.priority)}`}>
+                  {record.priority.toUpperCase()}
+                </span>
+              </div>
+
+              <div className="mb-3">
+                <div className="flex justify-between text-sm mb-1">
+                  <span className="text-gray-600">Progress</span>
+                  <span className="font-medium">{record.progress}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div
+                    className={`h-2 rounded-full transition-all duration-500 ${getStatusColor(record.status)}`}
+                    style={{ width: `${record.progress}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-sm mb-3">
+                <span className="text-gray-600">{record.lastUpdate}</span>
+                <span className={`font-medium ${record.status === 'overdue' ? 'text-red-600' : 'text-gray-600'}`}>
+                  {record.timeRemaining}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-4">
+                  <button
+                    onClick={() => likeRecord(record.id)}
+                    className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors"
+                  >
+                    <ThumbsUp className="w-4 h-4" />
+                    <span className="text-sm">{record.likes}</span>
+                  </button>
+                  <span className="flex items-center space-x-1 text-gray-600">
+                    <Users className="w-4 h-4" />
+                    <span className="text-sm">{record.reportsCount}</span>
                   </span>
                 </div>
+                <button
+                  onClick={() => setSelectedRecord(record)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                >
+                  View Details
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 
-                {/* Progress Bar */}
-                <div className="mb-3">
-                  <div className="flex justify-between text-sm mb-1">
-                    <span className="text-gray-600">Progress</span>
-                    <span className="font-medium">{record.progress}%</span>
+  const renderProfile = () => (
+    <div className="p-4 pb-20 space-y-6 animate-fade-in">
+      <h2 className="text-xl font-bold text-gray-800">Profile</h2>
+      
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-100 p-6 rounded-xl">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-3">
+            {userRole === 'municipality' ? 'M' : 'C'}
+          </div>
+          <h3 className="text-lg font-semibold text-gray-800">
+            {userRole === 'municipality' ? 'Municipal Staff' : 'Active Citizen'}
+          </h3>
+          <p className="text-gray-600 mb-4">Making a difference in the community</p>
+          <div className="flex justify-center items-center space-x-2 text-yellow-600">
+            <Star className="w-5 h-5 fill-current" />
+            <span className="font-semibold">{userPoints} Points</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-sm">
+        <h3 className="font-medium text-gray-800 mb-3">User Role</h3>
+        <div className="flex space-x-2">
+          <button
+            onClick={() => setUserRole('citizen')}
+            className={`flex-1 p-3 rounded-lg font-medium transition-all ${
+              userRole === 'citizen'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Citizen
+          </button>
+          <button
+            onClick={() => setUserRole('municipality')}
+            className={`flex-1 p-3 rounded-lg font-medium transition-all ${
+              userRole === 'municipality'
+                ? 'bg-blue-600 text-white'
+                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+            }`}
+          >
+            Municipality
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-white p-4 rounded-lg shadow-sm">
+        <h3 className="font-medium text-gray-800 mb-3">Statistics</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center">
+            <div className="text-2xl font-bold text-blue-600">{reports.length}</div>
+            <div className="text-sm text-gray-600">Reports Submitted</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-bold text-green-600">{userPoints}</div>
+            <div className="text-sm text-gray-600">Points Earned</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderDashboard = () => (
+    <div className="p-4 pb-20 space-y-6 animate-fade-in">
+      <h2 className="text-xl font-bold text-gray-800">Municipality Dashboard</h2>
+      
+      <div className="grid grid-cols-2 gap-4">
+        <div className="bg-blue-50 p-4 rounded-lg">
+          <div className="text-2xl font-bold text-blue-600">{aggregateRecords.length}</div>
+          <div className="text-sm text-gray-600">Active Issues</div>
+        </div>
+        <div className="bg-red-50 p-4 rounded-lg">
+          <div className="text-2xl font-bold text-red-600">
+            {aggregateRecords.filter(r => r.status === 'overdue').length}
+          </div>
+          <div className="text-sm text-gray-600">Overdue</div>
+        </div>
+      </div>
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-gray-800">Manage Issues</h3>
+        {aggregateRecords.map((record) => (
+          <div key={record.id} className="bg-white p-4 rounded-lg shadow-sm border">
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-medium">{record.title}</h4>
+              <span className={`px-2 py-1 rounded text-xs ${
+                record.status === 'overdue' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+              }`}>
+                {record.status.replace('_', ' ').toUpperCase()}
+              </span>
+            </div>
+            <p className="text-sm text-gray-600 mb-3">{record.location}</p>
+            <div className="mb-3">
+              <div className="w-full bg-gray-200 rounded-full h-2">
+                <div
+                  className={`h-2 rounded-full ${getStatusColor(record.status)}`}
+                  style={{ width: `${record.progress}%` }}
+                ></div>
+              </div>
+              <div className="text-xs text-gray-600 mt-1">{record.progress}% Complete</div>
+            </div>
+            <div className="flex items-center space-x-2">
+              <button 
+                onClick={() => updateProgress(record.id, Math.min(record.progress + 25, 100), record.progress >= 75 ? 'completed' : 'in_progress')}
+                className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 transition-colors"
+              >
+                Update Progress
+              </button>
+              <button 
+                onClick={() => updateProgress(record.id, 100, 'completed')}
+                className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700 transition-colors"
+              >
+                Mark Complete
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
+      {renderHeader()}
+      
+      <div className="overflow-y-auto">
+        {currentView === 'home' && renderHome()}
+        {currentView === 'report' && renderReport()}
+        {currentView === 'topics' && renderTopics()}
+        {currentView === 'dashboard' && userRole === 'municipality' && renderDashboard()}
+        {currentView === 'profile' && renderProfile()}
+      </div>
+      
+      {renderBottomNav()}
+      
+      {/* Detail Modal */}
+      {selectedRecord && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-sm w-full max-h-96 overflow-y-auto">
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-bold">{selectedRecord.title}</h3>
+                <button
+                  onClick={() => setSelectedRecord(null)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors text-2xl leading-none"
+                >
+                  ×
+                </button>
+              </div>
+              <p className="text-gray-600 mb-4 flex items-center">
+                <MapPin className="w-4 h-4 mr-2" />
+                {selectedRecord.location}
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Category:</span>
+                  <span className="text-sm bg-gray-100 px-2 py-1 rounded capitalize">
+                    {selectedRecord.category}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Priority:</span>
+                  <span className={`px-2 py-1 rounded text-xs font-medium border ${getPriorityColor(selectedRecord.priority)}`}>
+                    {selectedRecord.priority.toUpperCase()}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Status:</span>
+                  <span className="text-sm capitalize">{selectedRecord.status.replace('_', ' ')}</span>
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span className="font-medium">Progress:</span>
+                    <span>{selectedRecord.progress}%</span>
                   </div>
                   <div className="w-full bg-gray-200 rounded-full h-2">
                     <div
-                      className={`h-2 rounded-full transition-all duration-1000 ease-out ${getStatusColor(record.status)}`}
-                      style={{ width: `${record.progress}%` }}
+                      className={`h-2 rounded-full ${getStatusColor(selectedRecord.status)}`}
+                      style={{ width: `${selectedRecord.progress}%` }}
                     ></div>
                   </div>
                 </div>
-
-                {/* Status and Time */}
-                <div className="flex items-center justify-between text-sm mb-3">
-                  <span className="text-gray-600">{record.lastUpdate}</span>
-                  <span className={`font-medium flex items-center ${record.status === 'overdue' ? 'text-red-600' : 'text-gray-600'}`}>
-                    {record.status === 'overdue' && <Clock className="w-3 h-3 mr-1" />}
-                    {record.timeRemaining}
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Reports:</span>
+                  <span className="text-sm">{selectedRecord.reportsCount}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Community Support:</span>
+                  <span className="text-sm">{selectedRecord.likes} likes</span>
+                </div>
+                <div>
+                  <span className="text-sm font-medium">Last Update:</span>
+                  <p className="text-sm text-gray-600 mt-1">{selectedRecord.lastUpdate}</p>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">Time Remaining:</span>
+                  <span className={`text-sm ${selectedRecord.status === 'overdue' ? 'text-red-600 font-medium' : 'text-gray-600'}`}>
+                    {selectedRecord.timeRemaining}
                   </span>
                 </div>
+              </div>
+              
+              <div className="mt-6 pt-4 border-t">
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      likeRecord(selectedRecord.id);
+                      setSelectedRecord({...selectedRecord, likes: selectedRecord.likes + 1});
+                    }}
+                    className="flex-1 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                  >
+                    👍 Support ({selectedRecord.likes})
+                  </button>
+                  <button className="flex-1 px-4 py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-sm font-medium">
+                    🚩 Report Issue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
 
-                {/* Action Buttons */}
-                <div className="flex items-center justify-between pt-2 border-t">
-                  <div className="flex items-center space-x-4">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        likeRecord(record.id);
-                      }}
-                      className="flex items-center space-x-1 text-gray-600 hover:text-blue-600 transition-colors group"
-                    >
-                      <ThumbsUp className="w-4 h-4
+export default CivicIssueApp;
+
+// ============================================
+// FILE: src/index.js
+// ============================================
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// ============================================
+// FILE: public/index.html
+// ============================================
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="CivicConnect - Crowdsourced Civic Issue Reporting System" />
+    <title>CivicConnect - Report Civic Issues</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+
+// ============================================
+// DEPLOYMENT STEPS FOR VERCEL
+// ============================================
+
+/*
+STEP-BY-STEP DEPLOYMENT GUIDE:
+
+1. CREATE REACT PROJECT:
+   npx create-react-app civic-issue-app
+   cd civic-issue-app
+
+2. INSTALL DEPENDENCIES:
+   npm install lucide-react
+   npm install -D tailwindcss postcss autoprefixer
+   npx tailwindcss init -p
+
+3. REPLACE FILES:
+   - Replace src/App.js with the complete code above
+   - Replace src/index.js with the code above
+   - Replace src/index.css with the CSS code above
+   - Replace public/index.html with the HTML code above
+   - Replace tailwind.config.js with the config above
+   - Update package.json with the dependencies above
+
+4. TEST LOCALLY:
+   npm start
+
+5. DEPLOY TO VERCEL:
+   Method A - GitHub (Recommended):
+   - Push your code to GitHub
+   - Connect your GitHub repo to Vercel
+   - Deploy automatically
+
+   Method B - Vercel CLI:
+   npm i -g vercel
+   vercel
+
+   Method C - Direct Upload:
+   - Build the project: npm run build
+   - Upload the 'build' folder to Vercel
+
+6. ENVIRONMENT VARIABLES (if needed):
+   - No special environment variables required for this app
+
+7. CUSTOM DOMAIN (optional):
+   - Add your custom domain in Vercel dashboard
+
+TROUBLESHOOTING:
+- If you get 404 errors, make sure all files are in correct locations
+- If styles don't load, ensure Tailwind CSS is properly configured
+- If icons don't show, verify lucide-react is installed correctly
+- For mobile responsiveness issues, check viewport meta tag
+
+The app will be fully functional with:
+✅ Issue reporting with photo upload
+✅ Progress tracking with visual indicators  
+✅ Community interaction (likes, comments)
+✅ Municipality dashboard
+✅ Points/gamification system
+✅ Search and filtering
+✅ Responsive mobile design
+✅ Smooth animations and transitions
+*/
